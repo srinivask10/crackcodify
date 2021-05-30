@@ -3,6 +3,7 @@
 
 using namespace std;
 
+//partially implemented!!! TODO COMPLETE THIS!!
 string substrings_of_string(string s)
 {
     if (s.empty())
