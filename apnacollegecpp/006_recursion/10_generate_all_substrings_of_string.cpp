@@ -3,21 +3,42 @@
 
 using namespace std;
 
-//partially implemented!!! TODO COMPLETE THIS!!
-string substrings_of_string(string s)
+static int g_count;
+
+void substrings_of_string(string s, string ans)
 {
     if (s.empty())
     {
-        cout << "" << endl;
-        return "";
+        cout << g_count++ << " " << ans << endl;
+        return;
     }
 
-    cout << s[0]+substrings_of_string(s.substr(1));
-    cout << substrings_of_string(s.substr(1));
+    substrings_of_string(s.substr(1), ans);
+    substrings_of_string(s.substr(1), ans + s[0]);
+
+}
+
+void substrings_of_string_with_ascii(string s, string ans)
+{
+    if (s.empty())
+    {
+        cout << g_count++ << " " << ans << endl;
+        return;
+    }
+
+    int ascii = s[0];
+    substrings_of_string_with_ascii(s.substr(1), ans);
+    substrings_of_string_with_ascii(s.substr(1), ans + s[0]);
+    substrings_of_string_with_ascii(s.substr(1), ans + to_string(ascii));
+
 }
 
 int main()
 {
-    cout << substrings_of_string("abc") << endl;    
+    g_count = 0;
+    substrings_of_string("abcd", "");       //O(2^n) (n is length of string)
+
+    g_count = 0;
+    substrings_of_string_with_ascii("ABC", ""); //O(3^n) (n is length of string)
     return 0;
 }
