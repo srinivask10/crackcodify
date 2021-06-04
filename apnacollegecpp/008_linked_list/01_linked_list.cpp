@@ -155,6 +155,66 @@ node* recursive_reverse(node *head)
     return newhead;
 }
 
+bool cycle_detection(node *head)
+{
+    node *fast, *slow;
+    slow = fast = head;
+
+    while (fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+            return true;
+    }
+
+    return false;
+}
+
+
+//assume cycle is present.
+void cycle_remove(node *head)
+{
+    node *fast, *slow;
+    slow = fast = head;
+
+    do
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    } while (slow != fast);
+    slow = head;
+
+    while (slow->next != fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    fast->next = NULL;
+}
+
+void make_cycle(node *head, int pos)
+{
+    node *temp = head;
+    node *start;
+
+    int count = 1;
+    while (temp->next != NULL)
+    {
+        if (count == pos)
+            start = temp;
+
+        temp = temp->next;
+        count++;
+    }
+
+    temp->next = start;
+}
+
+
+
 int main()
 {
     node *head = NULL;
@@ -184,6 +244,15 @@ int main()
 
     head = kreverse(head, 2);
     display(head);
+
+    make_cycle(head, 3);
+    //display(head);
+    cout << "Cycle: " << cycle_detection(head) << endl;
+    cycle_remove(head);
+    
+    display(head);
+    cout << "Cycle: " << cycle_detection(head) << endl;
+
 
 
     return 0;
