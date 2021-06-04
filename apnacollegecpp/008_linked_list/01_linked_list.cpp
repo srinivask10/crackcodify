@@ -98,6 +98,63 @@ void deletion(node * &head, int val)
     delete todel;
 }
 
+void reverse_list(node* &head)
+{
+    node *current = head;
+    node *prev = NULL;
+    node* next = head->next;
+
+    while (current != NULL)
+    {
+        current->next = prev;
+
+        prev = current;
+        current = next;
+        if (next)
+            next = next->next;
+    }
+
+    head = prev;
+}
+
+node* kreverse(node* &head, int k)
+{
+    node *current = head;
+    node *prev = NULL;
+    node* next;
+
+    int count = 0;
+    while (current != NULL && count < k)
+    {
+        next = current->next;
+
+        current->next = prev;
+
+        prev = current;
+        current = next;
+        count++;
+    }
+
+    if (next)
+        head->next = kreverse(next, k);
+
+    return prev;
+}
+
+
+node* recursive_reverse(node *head)
+{
+    if (!head || !head->next)
+        return head;
+
+    node *newhead = recursive_reverse(head->next);
+
+    head->next->next = head;
+    head->next = NULL;
+
+    return newhead;
+}
+
 int main()
 {
     node *head = NULL;
@@ -105,8 +162,11 @@ int main()
     insert_at_tail(head, 1);
     insert_at_tail(head, 2);
     insert_at_tail(head, 3);
-
-    insert_at_head(head, 4);
+    insert_at_tail(head, 4);
+    insert_at_tail(head, 5);
+    insert_at_tail(head, 6);
+    insert_at_tail(head, 7);
+    //insert_at_head(head, 4);
 
     display(head);
 
@@ -114,9 +174,18 @@ int main()
     cout << search(head, 3) << endl;
 
     //deletion(head, 3);
-    delete_at_head(head);
+    //delete_at_head(head);
 
+    reverse_list(head);
     display(head);
+
+    head = recursive_reverse(head);
+    display(head);
+
+    head = kreverse(head, 2);
+    display(head);
+
 
     return 0;
 }
+
